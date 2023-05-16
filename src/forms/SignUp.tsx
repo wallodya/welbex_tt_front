@@ -6,7 +6,8 @@ import { createAccountSchema } from "./createAccount.schema"
 
 
 const SignUp = () => {
-	const { register, formState } = useForm({ resolver: zodResolver(createAccountSchema) })
+	const { register } = useForm({ resolver: zodResolver(createAccountSchema) })
+
 	return (
 		<Form.Root>
 			<Form.Field name="login">
@@ -18,6 +19,7 @@ const SignUp = () => {
 				</div>
 				<Form.Control asChild>
 					<input
+                        {...register("login")}
 						type="text"
 						className="w-full p-2 mt-2 bg-gray-700 rounded-lg border border-gray-600"
 					/>
@@ -32,7 +34,8 @@ const SignUp = () => {
 				</div>
 				<Form.Control asChild>
 					<input
-						type="password"
+                        {...register("email")}
+						type="email"
 						className="w-full p-2 mt-2 bg-gray-700 rounded-lg border border-gray-600"
 					/>
 				</Form.Control>
@@ -46,6 +49,7 @@ const SignUp = () => {
 				</div>
 				<Form.Control asChild>
 					<input
+                        {...register("password")}
 						type="password"
 						className="w-full p-2 mt-2 bg-gray-700 rounded-lg border border-gray-600"
 					/>
@@ -60,6 +64,7 @@ const SignUp = () => {
 				</div>
 				<Form.Control asChild>
 					<input
+                        {...register("confirmPassword")}
 						type="password"
 						className="w-full p-2 mt-2 bg-gray-700 rounded-lg border border-gray-600"
 					/>
