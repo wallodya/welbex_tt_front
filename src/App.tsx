@@ -1,8 +1,12 @@
-function App() {
+import PageWrap from "./components/PageWrap"
+import Feed from "./feed/Feed"
 
-  return (
-        <div className="w-24 h-24 bg-slate-500 p-2 font-bold">test</div>
-  )
+function App() {
+	return (
+		<PageWrap>
+			<Feed/>
+		</PageWrap>
+	)
 }
 
 export default App
