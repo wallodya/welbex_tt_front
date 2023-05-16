@@ -1,6 +1,5 @@
-import React from 'react'
-import Post, { PostProps } from './Post'
 import Pagination from './Pagination'
+import Post, { PostProps } from './Post'
 
 const posts: PostProps[] = [
     {
