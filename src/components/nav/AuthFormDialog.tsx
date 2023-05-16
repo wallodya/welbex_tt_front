@@ -8,8 +8,9 @@ const AuthFormDialog = () => {
 	return (
 		<Dialog.Root>
 			<Dialog.Trigger asChild>
-				{/* <Button>Sign-in</Button> */}
-				<button>sign-in</button>
+				<button className="text-gray-100 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+					sign-in
+				</button>
 			</Dialog.Trigger>
 			<Dialog.Portal className="">
 				<Dialog.Overlay className="fixed h-screen w-screen top-0 left-0 bg-gray-900/70" />
@@ -17,10 +18,16 @@ const AuthFormDialog = () => {
 					<div className="realative w-fit border rounded-lg shadow bg-gray-800 border-gray-700">
 						<Tabs.Root defaultValue="sign-in" className="w-full">
 							<Tabs.List className=" w-fit grid grid-cols-2 items-center">
-								<Tabs.TabsTrigger value={"sign-in"} className="ml-[-2] p-4 font-bold text-gray-500 aria-selected:text-slate-100">
+								<Tabs.TabsTrigger
+									value={"sign-in"}
+									className="ml-[-2] p-4 font-bold text-gray-500 aria-selected:text-slate-100"
+								>
 									Sign in
 								</Tabs.TabsTrigger>
-								<Tabs.TabsTrigger value={"sign-up"} className="p-4 font-bold text-gray-500 aria-selected:text-slate-100">
+								<Tabs.TabsTrigger
+									value={"sign-up"}
+									className="p-4 font-bold text-gray-500 aria-selected:text-slate-100"
+								>
 									Create&nbsp;account
 								</Tabs.TabsTrigger>
 							</Tabs.List>
