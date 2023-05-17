@@ -3,9 +3,12 @@ import Button from "../components/ui/Button"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { SignInSchema, signInSchema } from "./signIn.schema"
+import { useMutation } from "react-query"
+import { signIn } from "./auth.api"
+import { useCurrentUser } from "../hooks/useCurrentUser"
 
-const SignIn = () => {
-
+const SignIn = ({closeForm}: {closeForm: () => void}) => {
+    const { setUser } = useCurrentUser()
     const {
 		register,
 		formState: {
@@ -18,8 +21,19 @@ const SignIn = () => {
 		mode: "onChange",
 	})
 
+    const signInMutation = useMutation(signIn, {
+        onSuccess: (data) => {
+            console.log("setting user: ", data)
+            setUser(data)
+            closeForm()
+        },
+        onError: (err) => {
+            console.log("mutatoin err: ", err)
+        }
+    })
+
     const onSubmit = (data: SignInSchema) => {
-        console.log(data)
+        signInMutation.mutate(data)
     }
 
 	return (

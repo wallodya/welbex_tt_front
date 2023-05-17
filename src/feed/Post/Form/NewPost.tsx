@@ -3,21 +3,38 @@ import * as Form from "@radix-ui/react-form"
 import { useForm } from "react-hook-form"
 import { PostSchema, postSchema } from "./post.schema"
 import Button from "../../../components/ui/Button"
+import { useMutation, useQueryClient } from "react-query"
+import { savePost } from "../../feed.api"
+import { useCurrentUser } from "../../../hooks/useCurrentUser"
 
-const NewPost = () => {
-
-    const {
+const NewPost = ({ closeForm }: { closeForm: () => void }) => {
+	const {
 		handleSubmit,
 		register,
 		formState: {
-            isValid,
+			isValid,
 			errors: { text: textFieldError, mediaUrl: mediaURLFieldError },
 		},
 	} = useForm<PostSchema>({ resolver: zodResolver(postSchema) })
 
-    const onSubmit = (data: PostSchema) => {
-        console.log(data)
-    }
+	const queryClient = useQueryClient()
+
+	const savePostMuatation = useMutation(savePost, {
+		onSuccess: data => {
+			queryClient.invalidateQueries(["feed-page", 0])
+			closeForm()
+		},
+	})
+
+	const { user } = useCurrentUser()
+
+	const onSubmit = (data: PostSchema) => {
+		if (!user) {
+			return
+		}
+
+		savePostMuatation.mutate({ ...data, authorId: user.uuid })
+	}
 
 	return (
 		<div className="p-6 realative min-w-fit border rounded-lg shadow bg-gray-800 border-gray-700">

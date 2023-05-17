@@ -1,12 +1,18 @@
 import * as Dialog from "@radix-ui/react-dialog"
 import * as Tabs from "@radix-ui/react-tabs"
-import SignIn from "../../forms/SignIn"
-import SignUp from "../../forms/SignUp"
+import SignIn from "../../auth/SignIn"
+import SignUp from "../../auth/SignUp"
+import { useState } from "react"
 
 const AuthFormDialog = () => {
+    const [isOpen, setIsOpen] = useState(false)
+
+    const closeForm = () => {
+        setIsOpen(false)
+    }
 
 	return (
-		<Dialog.Root>
+		<Dialog.Root open={isOpen} onOpenChange={setIsOpen}>
 			<Dialog.Trigger asChild>
 				<button className="text-gray-100 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
 					sign-in
@@ -32,10 +38,10 @@ const AuthFormDialog = () => {
 								</Tabs.TabsTrigger>
 							</Tabs.List>
 							<Tabs.TabsContent value="sign-in" className="p-6">
-								<SignIn />
+								<SignIn closeForm={closeForm}/>
 							</Tabs.TabsContent>
 							<Tabs.TabsContent value="sign-up" className="p-6">
-								<SignUp />
+								<SignUp closeForm={closeForm}/>
 							</Tabs.TabsContent>
 						</Tabs.Root>
 					</div>

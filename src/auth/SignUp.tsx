@@ -6,8 +6,12 @@ import {
 	CreateAccountSchema,
 	createAccountSchema,
 } from "./createAccount.schema"
+import { useMutation } from "react-query"
+import { signUp } from "./auth.api"
+import { useCurrentUser } from "../hooks/useCurrentUser"
 
-const SignUp = () => {
+const SignUp = ({closeForm}:{closeForm: () => void}) => {
+    const { setUser } = useCurrentUser()
 	const {
 		register,
 		handleSubmit,
@@ -24,8 +28,16 @@ const SignUp = () => {
 		resolver: zodResolver(createAccountSchema),
 	})
 
+    const signUpMutation = useMutation(signUp, {
+        onSuccess: (data) => {
+            console.log("sign up success: ", data)
+            setUser(data)
+            closeForm()
+        }
+    })
+
 	const onSubmit = (data: CreateAccountSchema) => {
-		console.log(data)
+		signUpMutation.mutate(data)
 	}
 
 	return (
