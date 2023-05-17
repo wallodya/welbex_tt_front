@@ -34,7 +34,7 @@ const Post = ({ text, author, createdAt }: PostType) => {
         if (user.uuid === author.uuid) {
             setIsOwner(true)
         }
-    },[user])
+    },[user, author.uuid])
 
 	return (
 		<div className="p-3 bg-gray-100 border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">

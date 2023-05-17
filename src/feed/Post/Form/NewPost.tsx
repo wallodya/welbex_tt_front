@@ -20,7 +20,7 @@ const NewPost = ({ closeForm }: { closeForm: () => void }) => {
 	const queryClient = useQueryClient()
 
 	const savePostMuatation = useMutation(savePost, {
-		onSuccess: data => {
+		onSuccess: () => {
 			queryClient.invalidateQueries(["feed-page", 0])
 			closeForm()
 		},
