@@ -12,7 +12,7 @@ export const useCurrentUser = () => {
             return
         }
         const savedUser = JWT.read(userToken)?.claim?.sub
-        console.log("user in LS: ", savedUser)
+        // console.log("user in LS: ", savedUser)
         if (isUserType(savedUser)) {
             setUser(savedUser)
         }

@@ -19,7 +19,7 @@ const PostFormDialog = () => {
 			</Dialog.Trigger>
 			<Dialog.Portal>
 				<Dialog.Overlay className="fixed h-screen w-screen top-0 left-0 bg-gray-900/70" />
-				<Dialog.Content className="absolute inset-0 m-auto w-fit h-fit">
+				<Dialog.Content className="absolute inset-0 mx-auto mt-44 w-fit h-fit">
 					<NewPost closeForm={closeForm}/>
 				</Dialog.Content>
 			</Dialog.Portal>

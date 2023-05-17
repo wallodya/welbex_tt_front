@@ -8,13 +8,15 @@ const Feed = () => {
     const posts = usePostsForPage(paginationControl.currentPage)
 
 	return (
-		<div className="min-h-screen flex flex-col gap-3 md:grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-			<PostFormDialog />
-			{posts.map((post, index) => (
-				<Post key={index} {...post} />
-			))}
-			<div className="flex justify-center items-center mt-12">
-				<PaginationControls {...paginationControl}/>
+		<div>
+			<div className="min-h-fit flex flex-col gap-3 md:grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+				<PostFormDialog />
+				{posts.map((post, index) => (
+					<Post currentPage={paginationControl.currentPage} key={index} {...post} />
+				))}
+			</div>
+			<div className="flex w-full justify-center items-center mt-12">
+				<PaginationControls {...paginationControl} />
 			</div>
 		</div>
 	)

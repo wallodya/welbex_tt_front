@@ -27,6 +27,7 @@ export const usePostsForPage = (page: number): PostType[] => {
     const [posts, setPosts] = useState<PostType[]>([])
     useQuery(["feed-page", page], () => getPostsForPage(page), {
         onSuccess: (data) => {
+            console.log("got posts: ", data.length)
             setPosts([...data])
         }
     })

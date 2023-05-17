@@ -47,7 +47,7 @@ export const updatePost = async (postData: PostSchema & {authorId: string, postI
 }
 export const deletePost = async (postId: string) => {
     const post = await fetchData(`/forum?postid=${postId}`, { method: "DELETE" })
-    
+    console.log("deleted post: ",post)
     if (!isPost(post)) {
         throw new Error("Invalid post data")
     }
