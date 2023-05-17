@@ -6,24 +6,36 @@ import { SignInSchema, signInSchema } from "./signIn.schema"
 
 const SignIn = () => {
 
-    const { register, formState, handleSubmit } = useForm<SignInSchema>({ resolver: zodResolver(signInSchema) })
+    const {
+		register,
+		formState: {
+			isValid,
+			errors: { login: loginFieldError, password: passwordFieldError },
+		},
+		handleSubmit,
+	} = useForm<SignInSchema>({
+		resolver: zodResolver(signInSchema),
+		mode: "onChange",
+	})
 
     const onSubmit = (data: SignInSchema) => {
         console.log(data)
     }
 
 	return (
-		<Form.Root autoComplete="off">
+        <Form.Root autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
 			<Form.Field name="login">
 				<div className="flex justify-between items-baseline">
 					<Form.Label className="text-sm">Login</Form.Label>
-					<Form.Message className="text-xs text-red-500/80">
-						{formState.errors.login?.message}
-					</Form.Message>
+					{loginFieldError && (
+						<Form.Message className="text-xs text-red-500/80">
+							{loginFieldError.message}
+						</Form.Message>
+					)}
 				</div>
 				<Form.Control asChild>
 					<input
-                        {...register("login")}
+						{...register("login")}
 						type="text"
 						className="w-full p-2 mt-2 bg-gray-700 rounded-lg border border-gray-600"
 					/>
@@ -32,21 +44,24 @@ const SignIn = () => {
 			<Form.Field name="password" className="mt-4">
 				<div className="flex justify-between items-baseline">
 					<Form.Label className="text-sm">Password</Form.Label>
-					<Form.Message className="text-xs text-red-500/80">
-						{formState.errors.password && formState.errors.password.message}
-					</Form.Message>
+                    {
+                        passwordFieldError &&
+                            <Form.Message className="text-xs text-red-500/80">
+                                {passwordFieldError.message}
+                            </Form.Message>
+                    }
 				</div>
 				<Form.Control asChild>
 					<input
-                        {...register("password")}
+						{...register("password")}
 						type="password"
 						className="w-full p-2 mt-2 bg-gray-700 rounded-lg border border-gray-600"
 					/>
 				</Form.Control>
 			</Form.Field>
-			<Form.Submit onSubmit={handleSubmit(onSubmit)} asChild>
+			<Form.Submit asChild>
 				<div className="mt-8 w-full">
-					<Button disabled={!formState.isValid}>Sign in</Button>
+					<Button disabled={!isValid}>Sign in</Button>
 				</div>
 			</Form.Submit>
 		</Form.Root>
