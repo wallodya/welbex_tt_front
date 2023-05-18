@@ -22,8 +22,6 @@ export const getPostsAmount = async (): Promise<number> => {
 }
 
 export const savePost = async (postData: PostSchema) => {
-// export const savePost = async (postData: FormData) => {
-    console.log('postData', postData)
     const accessToken = JWT.get()?.replace("Bearer ", "")
     const postRes = await fetch(`${import.meta.env.VITE_API_URL}/forum`, {
 		method: "POST",
@@ -35,8 +33,6 @@ export const savePost = async (postData: PostSchema) => {
 	})
 
     const post = await postRes.json()
-
-    console.log(post)
     
     if (!isPost(post)) {
         throw new Error("Invalid post data")

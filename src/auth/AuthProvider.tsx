@@ -32,7 +32,6 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
             return
         }
         const savedUser = JWT.read(userToken)?.claim?.sub
-        // console.log("user in LS: ", savedUser)
         if (isUserType(savedUser)) {
             setUser(savedUser)
         }
@@ -44,12 +43,9 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
 
     const setCurrentUser = (userData: User) => {
-        // console.log("new user: ", isUserType(userData))
-        // console.log("new user: ", isLoggedIn)
         setUser(prevState =>
 			prevState ? { ...prevState, ...userData } : { ...userData }
 		)
-        // console.log("remember: ", isLoggedIn)
     }
 
     const contextValue: UserContextValue = {

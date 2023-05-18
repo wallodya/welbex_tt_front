@@ -23,7 +23,6 @@ const SignIn = ({closeForm}: {closeForm: () => void}) => {
 
     const signInMutation = useMutation(signIn, {
         onSuccess: (data) => {
-            console.log("setting user: ", data)
             setCurrentUser(data)
             closeForm()
         },
