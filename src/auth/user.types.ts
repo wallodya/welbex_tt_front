@@ -10,6 +10,13 @@ export type User = {
     createdAt: number;
 }
 
+export type UserContextValue = {
+    user: User | null,
+    isLoggedIn: boolean,
+    setCurrentUser: (userData: User) => void,
+    removeUser: () => void,
+}
+
 export const isUserType = (obj: unknown): obj is User => {
     return (
 		typeof obj === "object" &&

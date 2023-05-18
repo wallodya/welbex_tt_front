@@ -1,19 +1,19 @@
 import moment from "moment"
-import { PostType } from "../feed.types"
-import { useCurrentUser } from "../../hooks/useCurrentUser"
 import { useEffect, useState } from "react"
 import PencilIcon from "../../components/icons/PencilIcon"
 import TrashIcon from "../../components/icons/TrashIcon"
 import { useMutation, useQueryClient } from "react-query"
 import { deletePost } from "../feed.api"
+import { usePost } from "./PostProvider"
+import { useAuth } from "../../auth/AuthProvider"
 
-const PostActions = ({
-	currentPage,
-	postId,
-}: {
-	currentPage: number
-	postId: string
-}) => {
+const PostActions = () => {
+    const {
+		currentPage,
+		post: { uniqueMessageId: postId, text, author: {uuid: authorId} },
+        editPost
+	} = usePost()
+
 	const queryClient = useQueryClient()
 	const deletePostMutation = useMutation(deletePost, {
 		onSuccess: () => {
@@ -27,7 +27,9 @@ const PostActions = ({
 
 	return (
 		<div className="flex gap-4 items-center">
-			<button className="px-2 py-1 text-sm font-bold flex gap-1 rounded-lg border border-gray-400 items-center text-gray-400 hover:bg-gray-600">
+			<button className="px-2 py-1 text-sm font-bold flex gap-1 rounded-lg border border-gray-400 items-center text-gray-400 hover:bg-gray-600"
+                onClick={() => editPost({postId, text, authorId})}
+            >
 				<PencilIcon size="sm" />
 				Edit
 			</button>
@@ -42,16 +44,11 @@ const PostActions = ({
 	)
 }
 
-const Post = ({
-	text,
-	author,
-	createdAt,
-	currentPage,
-	uniqueMessageId,
-}: PostType & { currentPage: number }) => {
+const Post = () => {
 	const [isOwner, setIsOwner] = useState(false)
+    const { post: {author, createdAt, text}} = usePost()
 
-	const { user } = useCurrentUser()
+	const { user } = useAuth()
 
 	useEffect(() => {
 		if (!user) {
@@ -76,10 +73,7 @@ const Post = ({
 			<p>{text}</p>
 			<div className="w-full mt-4 flex justify-between items-center">
 				{isOwner && (
-					<PostActions
-						currentPage={currentPage}
-						postId={uniqueMessageId}
-					/>
+					<PostActions/>
 				)}
 				<span className="ml-auto text-xs font-md text-gray-500">
 					{moment(createdAt).fromNow()}

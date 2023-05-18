@@ -8,10 +8,10 @@ import {
 } from "./createAccount.schema"
 import { useMutation } from "react-query"
 import { signUp } from "./auth.api"
-import { useCurrentUser } from "../hooks/useCurrentUser"
+import { useAuth } from "./AuthProvider"
 
 const SignUp = ({closeForm}:{closeForm: () => void}) => {
-    const { setUser } = useCurrentUser()
+    const { setCurrentUser } = useAuth()
 	const {
 		register,
 		handleSubmit,
@@ -30,8 +30,7 @@ const SignUp = ({closeForm}:{closeForm: () => void}) => {
 
     const signUpMutation = useMutation(signUp, {
         onSuccess: (data) => {
-            console.log("sign up success: ", data)
-            setUser(data)
+            setCurrentUser(data)
             closeForm()
         }
     })

@@ -33,7 +33,7 @@ export const savePost = async (postData: PostSchema & {authorId: string}) => {
     return post
 }
 
-export const updatePost = async (postData: PostSchema & {authorId: string, postId: string}) => {
+export const updatePost = async (postData: PostSchema & { authorId: string, postId: string }) => {
     const post = await fetchData(`/forum`, {
 		method: "PUT",
 		body: JSON.stringify(postData),

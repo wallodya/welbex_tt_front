@@ -9,8 +9,29 @@ export type PostType = {
     }
 }
 
+export type PostContextValue = {
+    post: PostType,
+    editPost: (postData: InitialFormValues) => void,
+    currentPage: number
+}
+
 export type PageAmountData = {
     messagesAmount: number
+}
+
+export type InitialFormValues = {
+	authorId: string
+	text: string
+	postId: string
+}
+
+export type PostFormContext = {
+    isOpen: boolean,
+    closeForm: () => void,
+    toggleForm: (open: boolean) => void,
+    openForm: () => void,
+    action: "edit" | "new",
+    initialValues: InitialFormValues| null
 }
 
 export const isPost = (obj: unknown): obj is PostType => {

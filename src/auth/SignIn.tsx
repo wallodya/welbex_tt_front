@@ -5,10 +5,10 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { SignInSchema, signInSchema } from "./signIn.schema"
 import { useMutation } from "react-query"
 import { signIn } from "./auth.api"
-import { useCurrentUser } from "../hooks/useCurrentUser"
+import { useAuth } from "./AuthProvider"
 
 const SignIn = ({closeForm}: {closeForm: () => void}) => {
-    const { setUser } = useCurrentUser()
+    const { setCurrentUser } = useAuth()
     const {
 		register,
 		formState: {
@@ -24,7 +24,7 @@ const SignIn = ({closeForm}: {closeForm: () => void}) => {
     const signInMutation = useMutation(signIn, {
         onSuccess: (data) => {
             console.log("setting user: ", data)
-            setUser(data)
+            setCurrentUser(data)
             closeForm()
         },
         onError: (err) => {

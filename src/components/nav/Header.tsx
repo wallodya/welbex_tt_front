@@ -1,7 +1,7 @@
 import { useMutation } from "react-query"
 import { signOut } from "../../auth/auth.api"
-import { useCurrentUser } from "../../hooks/useCurrentUser"
 import AuthFormDialog from "./AuthFormDialog"
+import { useAuth } from "../../auth/AuthProvider"
 
 const SignOutButton = ({removeUserFn}:{removeUserFn: () => void}) => {
     const mutation = useMutation(signOut, {
@@ -21,7 +21,7 @@ const SignOutButton = ({removeUserFn}:{removeUserFn: () => void}) => {
 }
 
 const Header = () => {
-	const { user, removeUser } = useCurrentUser()
+	const { user, removeUser } = useAuth()
 
 	return (
 		<div className="fixed top-0 left-0 w-screen grid grid-cols-main shadow shadow-gray-900 py-3 bg-gray-800">

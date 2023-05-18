@@ -4,20 +4,15 @@ import { useForm } from "react-hook-form"
 import { PostSchema, postSchema } from "./post.schema"
 import Button from "../../../components/ui/Button"
 import { useMutation, useQueryClient } from "react-query"
-import { savePost } from "../../feed.api"
-import { useCurrentUser } from "../../../hooks/useCurrentUser"
+import { savePost, updatePost } from "../../feed.api"
+import { usePostForm } from "./PostFormProvider"
+import { useEffect } from "react"
+import { useAuth } from "../../../auth/AuthProvider"
 
-const NewPost = ({ closeForm }: { closeForm: () => void }) => {
-	const {
-		handleSubmit,
-		register,
-		formState: {
-			isValid,
-			errors: { text: textFieldError, mediaUrl: mediaURLFieldError },
-		},
-	} = useForm<PostSchema>({ resolver: zodResolver(postSchema) })
+const usePostFormMutation = () => {
+    const { closeForm, action } = usePostForm()
 
-	const queryClient = useQueryClient()
+    const queryClient = useQueryClient()
 
 	const savePostMuatation = useMutation(savePost, {
 		onSuccess: () => {
@@ -26,15 +21,55 @@ const NewPost = ({ closeForm }: { closeForm: () => void }) => {
 		},
 	})
 
-	const { user } = useCurrentUser()
+	const updatePostMuatation = useMutation(updatePost, {
+		onSuccess: () => {
+			queryClient.invalidateQueries(["feed-page", 0])
+			closeForm()
+		},
+	})
+
+	const { user } = useAuth()
 
 	const onSubmit = (data: PostSchema) => {
 		if (!user) {
 			return
 		}
-
-		savePostMuatation.mutate({ ...data, authorId: user.uuid })
+        if (action === "new") {
+            savePostMuatation.mutate({ ...data, authorId: user.uuid })
+        } 
+        if (action === "edit" && data.authorId && data.postId) {
+            updatePostMuatation.mutate({
+				...data,
+				authorId: data.authorId ?? "",
+				postId: data.postId ?? "",
+			})
+        }
 	}
+    return onSubmit
+}
+
+const NewPost = () => {
+	const {
+		handleSubmit,
+		register,
+        setValue,
+		formState: {
+			isValid,
+			errors: { text: textFieldError, mediaUrl: mediaURLFieldError },
+		},
+	} = useForm<PostSchema>({ resolver: zodResolver(postSchema) })
+
+	const onSubmit = usePostFormMutation()
+
+    const { action, initialValues } = usePostForm()
+
+    useEffect(() => {
+        if (action === "edit" && initialValues) {
+            setValue("authorId", initialValues.authorId)
+            setValue("postId", initialValues.postId)
+            setValue("text", initialValues.text)
+        }
+    }, [action])
 
 	return (
 		<div className="p-6 realative min-w-fit border rounded-lg shadow bg-gray-800 border-gray-700">
