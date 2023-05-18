@@ -3,18 +3,6 @@ import JWT from "jwt-client"
 const BASE_URL = import.meta.env.VITE_API_URL
 const AUTH_HEADER_NAME = "authorization"
 
-const getBaseFetchOptions = (): RequestInit => {
-    const accessToken = JWT.get()?.replace("Bearer ", "")
-    return {
-        credentials: "include",
-        headers: {
-            // Accept: "application/json",
-            "Content-Type": "application/json",
-            [AUTH_HEADER_NAME]: accessToken,
-        },
-    }
-}
-
 
 export const fetchData = async (path: string, options?: RequestInit) => {
     const accessToken = JWT.get()?.replace("Bearer ", "")

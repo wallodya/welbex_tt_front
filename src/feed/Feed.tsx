@@ -1,12 +1,12 @@
 import { useState } from "react"
+import { useAuth } from "../auth/AuthProvider"
 import PaginationControls from "./PaginationControls"
 import PostFormDialog from "./Post/Form/PostFormDialog"
 import PostFormProvider from "./Post/Form/PostFormProvider"
 import Post from "./Post/Post"
-import { usePagination, usePostsForPage } from "./feed.hooks"
-import { InitialFormValues, PostFormContext } from "./feed.types"
 import PostProvider from "./Post/PostProvider"
-import { useAuth } from "../auth/AuthProvider"
+import { usePagination, usePostsForPage } from "./feed.hooks"
+import { InitialFormValues } from "./feed.types"
 
 const usePostFormControls = () => {
     const [isFormOpen, setIsFormOpen] = useState(false)
