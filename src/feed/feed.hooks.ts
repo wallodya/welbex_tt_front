@@ -27,7 +27,6 @@ export const usePostsForPage = (page: number): PostType[] => {
     const [posts, setPosts] = useState<PostType[]>([])
     useQuery(["feed-page", page], () => getPostsForPage(page), {
         onSuccess: (data) => {
-            console.log("got posts: ", data.length)
             setPosts([...data])
         }
     })
@@ -47,7 +46,7 @@ export const usePagination = () => {
         }
 
         setPage(page + 1)
-        localStorage.setItem(PAGE_LS_NAME, String(page))
+        localStorage.setItem(PAGE_LS_NAME, String(page + 1))
     }
     
     const back = () => {
@@ -55,8 +54,8 @@ export const usePagination = () => {
             return
         }
         
-        setPage(page -1)
-        localStorage.setItem(PAGE_LS_NAME, String(page))
+        setPage(page - 1)
+        localStorage.setItem(PAGE_LS_NAME, String(page - 1))
     }
 
     useEffect(() => {

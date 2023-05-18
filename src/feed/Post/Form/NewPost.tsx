@@ -1,13 +1,14 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as Form from "@radix-ui/react-form"
-import { useForm } from "react-hook-form"
-import { PostSchema, postSchema } from "./post.schema"
-import Button from "../../../components/ui/Button"
-import { useMutation, useQueryClient } from "react-query"
-import { savePost, updatePost } from "../../feed.api"
-import { usePostForm } from "./PostFormProvider"
 import { useEffect } from "react"
+import { useForm } from "react-hook-form"
+import { useMutation, useQueryClient } from "react-query"
 import { useAuth } from "../../../auth/AuthProvider"
+import Button from "../../../components/ui/Button"
+import { savePost, updatePost } from "../../feed.api"
+import FileUpload from "./FileUpload"
+import { usePostForm } from "./PostFormProvider"
+import { PostSchema, postSchema } from "./post.schema"
 
 const usePostFormMutation = () => {
     const { closeForm, action } = usePostForm()
@@ -35,7 +36,8 @@ const usePostFormMutation = () => {
 			return
 		}
         if (action === "new") {
-            savePostMuatation.mutate({ ...data, authorId: user.uuid })
+
+            savePostMuatation.mutate({...data, authorId: user.uuid})
         } 
         if (action === "edit" && data.authorId && data.postId) {
             updatePostMuatation.mutate({
@@ -55,9 +57,9 @@ const NewPost = () => {
         setValue,
 		formState: {
 			isValid,
-			errors: { text: textFieldError, mediaUrl: mediaURLFieldError },
+			errors: { text: textFieldError },
 		},
-	} = useForm<PostSchema>({ resolver: zodResolver(postSchema) })
+	} = useForm<PostSchema>({ resolver: zodResolver(postSchema), mode: "onChange" })
 
 	const onSubmit = usePostFormMutation()
 
@@ -70,6 +72,11 @@ const NewPost = () => {
             setValue("text", initialValues.text)
         }
     }, [action])
+
+    const removeFile = () => {
+        setValue("media", null)
+    }
+
 
 	return (
 		<div className="p-6 realative min-w-fit border rounded-lg shadow bg-gray-800 border-gray-700">
@@ -92,7 +99,7 @@ const NewPost = () => {
 						/>
 					</Form.Control>
 				</Form.Field>
-				<Form.Field name="mediaUrl" className="mt-4">
+				{/* <Form.Field name="mediaUrl" className="mt-4 hidden">
 					<div className="flex justify-between items-baseline">
 						<Form.Label className="text-sm">media url</Form.Label>
 						{mediaURLFieldError && (
@@ -108,7 +115,15 @@ const NewPost = () => {
 							className="w-full p-2 mt-2 bg-gray-700 rounded-lg border border-gray-600"
 						/>
 					</Form.Control>
-				</Form.Field>
+				</Form.Field> */}
+
+				{action === "new" && (
+					<FileUpload
+						register={register}
+						removeFile={removeFile}
+					/>
+				)}
+
 				<Form.Submit asChild>
 					<div className="mt-8 w-full">
 						<Button disabled={!isValid}>Save post</Button>

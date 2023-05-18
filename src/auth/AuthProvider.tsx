@@ -24,11 +24,11 @@ export const useAuth = () => useContext(AuthContext)
 
 const AuthProvider = ({ children }: { children: ReactNode }) => {
     const [user, setUser] = useState<User | null>(null)
-    const [isLoggedIn, setIsLoggedIn] = useState(false)
 
     useEffect(() => {
         const userToken = JWT.get()
-        if (!userToken) {
+        if (!userToken || !JWT.validate(JWT.read(userToken))) {
+            JWT.forget()
             return
         }
         const savedUser = JWT.read(userToken)?.claim?.sub
@@ -45,12 +45,11 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     const setCurrentUser = (userData: User) => {
         // console.log("new user: ", isUserType(userData))
-        console.log("new user: ", isLoggedIn)
+        // console.log("new user: ", isLoggedIn)
         setUser(prevState =>
 			prevState ? { ...prevState, ...userData } : { ...userData }
 		)
-        setIsLoggedIn(true)
-        console.log("remember: ", isLoggedIn)
+        // console.log("remember: ", isLoggedIn)
     }
 
     const contextValue: UserContextValue = {

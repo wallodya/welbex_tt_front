@@ -6,7 +6,6 @@ import { useAuth } from "../../auth/AuthProvider"
 const SignOutButton = ({removeUserFn}:{removeUserFn: () => void}) => {
     const mutation = useMutation(signOut, {
 		onSuccess: () => {
-			console.log("signed out")
             removeUserFn()
 		},
 	})

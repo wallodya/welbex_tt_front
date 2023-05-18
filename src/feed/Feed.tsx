@@ -6,12 +6,10 @@ import Post from "./Post/Post"
 import { usePagination, usePostsForPage } from "./feed.hooks"
 import { InitialFormValues, PostFormContext } from "./feed.types"
 import PostProvider from "./Post/PostProvider"
+import { useAuth } from "../auth/AuthProvider"
 
-const Feed = () => {
-	const paginationControl = usePagination()
-	const posts = usePostsForPage(paginationControl.currentPage)
-
-	const [isFormOpen, setIsFormOpen] = useState(false)
+const usePostFormControls = () => {
+    const [isFormOpen, setIsFormOpen] = useState(false)
 	const [postFormActionType, setPostFormActionType] = useState<
 		"new" | "edit"
 	>("new")
@@ -32,37 +30,49 @@ const Feed = () => {
 		setIsFormOpen(open)
 	}
 
-	const postFormContextValue: PostFormContext = {
-		isOpen: isFormOpen,
-		closeForm,
-		openForm,
-		toggleForm,
-		action: postFormActionType,
-		initialValues: initialFormValues,
-	}
-
-	const editPost = (postData: InitialFormValues) => {
+    const editPost = (postData: InitialFormValues) => {
 		openForm()
 		setPostFormActionType("edit")
 		setInitialFormValues(postData)
 	}
 
+    return {
+        isOpen: isFormOpen,
+		closeForm,
+		openForm,
+		toggleForm,
+		action: postFormActionType,
+		initialValues: initialFormValues,
+        editPost
+    }
+}
+
+const Feed = () => {
+	const paginationControl = usePagination()
+	const posts = usePostsForPage(paginationControl.currentPage)
+
+    const {editPost, ...postFormContextValue} = usePostFormControls()
+
+    const { user } = useAuth()
+
 	return (
 		<div>
 			<div className="min-h-fit flex flex-col gap-3 md:grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-				<PostFormProvider contextValue={postFormContextValue}>
-					<PostFormDialog />
-				</PostFormProvider>
-				{posts.map((post, index) => (
+				{user && (
+					<PostFormProvider contextValue={postFormContextValue}>
+						<PostFormDialog />
+					</PostFormProvider>
+				)}
+				{posts.map((post) => (
 					<PostProvider
-						key={`post-context-${index}`}
+						key={`post-context-${post.uniqueMessageId}`}
 						contextValue={{
 							post,
 							editPost,
 							currentPage: paginationControl.currentPage,
 						}}
 					>
-						<Post key={`post-${index}`} />
+						<Post key={`post-${post.uniqueMessageId}`} />
 					</PostProvider>
 				))}
 			</div>

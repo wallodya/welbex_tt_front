@@ -1,7 +1,6 @@
 import * as Dialog from "@radix-ui/react-dialog"
 import PencilIcon from "../../../components/icons/PencilIcon"
 import NewPost from "./NewPost"
-import { useState } from "react"
 import { usePostForm } from "./PostFormProvider"
 
 const PostFormDialog = () => {

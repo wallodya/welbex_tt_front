@@ -46,7 +46,7 @@ const PostActions = () => {
 
 const Post = () => {
 	const [isOwner, setIsOwner] = useState(false)
-    const { post: {author, createdAt, text}} = usePost()
+    const { post: {author, createdAt, text, mediaURL}} = usePost()
 
 	const { user } = useAuth()
 
@@ -70,6 +70,9 @@ const Post = () => {
 			>
 				{author.login}
 			</span>
+            {
+                mediaURL && <img src={`${import.meta.env.VITE_API_URL}/${mediaURL}`}/>
+            }
 			<p>{text}</p>
 			<div className="w-full mt-4 flex justify-between items-center">
 				{isOwner && (

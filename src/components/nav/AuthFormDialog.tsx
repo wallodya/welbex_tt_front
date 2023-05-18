@@ -20,7 +20,7 @@ const AuthFormDialog = () => {
 			</Dialog.Trigger>
 			<Dialog.Portal className="">
 				<Dialog.Overlay className="fixed h-screen w-screen top-0 left-0 bg-gray-900/70" />
-				<Dialog.Content className="absolute inset-0 mx-auto mt-44 w-fit h-fit">
+				<Dialog.Content className="fixed inset-0 mx-auto mt-44 w-fit h-fit">
 					<div className="realative w-fit border rounded-lg shadow bg-gray-800 border-gray-700">
 						<Tabs.Root defaultValue="sign-in" className="w-full">
 							<Tabs.List className=" w-fit grid grid-cols-2 items-center">
